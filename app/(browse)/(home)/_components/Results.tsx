@@ -1,9 +1,9 @@
 "use client"
-import { api } from '@/convex/_generated/api'
+import { api } from '../../../../convex/_generated/api'
 import { useQuery } from 'convex/react'
 import React from 'react'
 import ResultCard, { ResultCardSkeleton } from './ResultCard'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Skeleton } from '../../../../components/ui/skeleton'
 
 const Results = () => {
   const streams = useQuery(api.stream.getLiveStreamsWithoutOwn)

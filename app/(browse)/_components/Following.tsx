@@ -1,5 +1,5 @@
-import { useSidebar } from "@/store/useSidebar";
-import { UserProp } from "@/types";
+import { useSidebar } from "../../../store/useSidebar";
+import { UserProp } from ".../../../types";
 import UserItem, { UserItemSkeleton } from "./UserItem";
 
 interface FollowingProps {

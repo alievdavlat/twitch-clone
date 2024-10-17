@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../components/ui/button";
 import { SignInButton, UserButton, useUser } from "@clerk/clerk-react";
 import { dark } from "@clerk/themes";
 import { Clapperboard } from "lucide-react";

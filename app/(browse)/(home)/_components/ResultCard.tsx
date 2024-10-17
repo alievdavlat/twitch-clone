@@ -1,9 +1,9 @@
-import Link from 'next/link'
 import React from 'react'
+import Link from 'next/link'
 import Thumbnail, { ThumnailSkeleton } from './Thumbnail'
 import LiveBadge from '../../_components/live-badge'
 import UserAvatar, { UserAvatarSkeleton } from '../../_components/UserAvatar'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Skeleton } from '../../../../components/ui/skeleton'
 
 interface ResultCardProps {
   stream:any

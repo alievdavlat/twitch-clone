@@ -1,7 +1,7 @@
 "use client"
-import { cn } from '@/lib/utils'
-import { useSidebar } from '@/store/useSidebar'
-import { childProps } from '@/types'
+import { cn } from '../../../lib/utils'
+import { useSidebar } from '../../../store/useSidebar'
+import { childProps } from '../../../types'
 import { useMediaQuery } from 'usehooks-ts'
 import React, { useEffect } from 'react'
 

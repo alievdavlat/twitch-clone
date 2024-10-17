@@ -1,5 +1,5 @@
 
-import { childProps } from '@/types'
+import { childProps } from '../../types'
 import React from 'react'
 import Logo from './_components/logo'
 

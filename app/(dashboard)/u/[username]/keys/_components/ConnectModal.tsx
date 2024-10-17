@@ -29,38 +29,38 @@ const WHIP = String(IngressInput.WHIP_INPUT);
 
 type IngressType = typeof RTMP | typeof WHIP;
 interface ConnectModalProps {
-  username:string
+  username: string;
 }
-const ConnectModal = ({username}: ConnectModalProps) => {
+const ConnectModal = ({ username }: ConnectModalProps) => {
   const closeRef = React.useRef<React.ElementRef<"button">>(null);
   const [isPending, startTransition] = React.useTransition();
   const [ingressType, setIngressType] = React.useState<IngressType>(RTMP);
-  const user = useQuery(api.users.getUsersByUsername, {username:username});
+  const user = useQuery(api.users.getUsersByUsername, { username: username });
 
-  
-  
   const onSubmit = async () => {
     startTransition(async () => {
       try {
-     if (user !== undefined) {
-      const response = await createIngress(parseInt(ingressType), user);
-      if (response.ingress && response.ingressId && response.serverUrl && response.streamKey) { 
-        toast.success("Ingress created successfully!");
-        console.log("Stream URL:", response.serverUrl);
-        console.log("Stream Key:", response.streamKey);
-      } else {
-        
-      }
-      closeRef?.current?.click();
-     }
+        if (user !== undefined) {
+          const response = await createIngress(parseInt(ingressType), user);
+          if (
+            response.ingress &&
+            response.ingressId &&
+            response.serverUrl &&
+            response.streamKey
+          ) {
+            toast.success("Ingress created successfully!");
+            console.log("Stream URL:", response.serverUrl);
+            console.log("Stream Key:", response.streamKey);
+          } else {
+          }
+          closeRef?.current?.click();
+        }
       } catch (err) {
         toast.error("Something went wrong");
-        console.log(err, 'err'); 
+        console.log(err, "err");
       }
     });
   };
-  
-  
 
   return (
     <Dialog>
@@ -75,8 +75,7 @@ const ConnectModal = ({username}: ConnectModalProps) => {
         <Select
           value={ingressType}
           disabled={isPending}
-          onValueChange={(value) => setIngressType(value)}
-        >
+          onValueChange={(value) => setIngressType(value)}>
           <SelectTrigger className="w-full ">
             <SelectValue placeholder="Ingress Type" />
           </SelectTrigger>

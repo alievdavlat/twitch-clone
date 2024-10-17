@@ -4,40 +4,25 @@ import {
   IngressAudioEncodingPreset,
   IngressInput,
   IngressVideoEncodingPreset,
-  RoomServiceClient,
   type CreateIngressOptions,
   TrackSource,
   IngressClient,
   IngressAudioOptions,
   IngressVideoOptions,
+  RoomServiceClient,
 } from "livekit-server-sdk";
 import { api } from "@/convex/_generated/api";
 import { ConvexHttpClient } from "convex/browser";
-
-// LiveKit mijozlarini ishga tushirish
 const roomService = new RoomServiceClient(
   process.env.NEXT_PUBLIC_LIVEKIT_API_URL!,
   process.env.NEXT_PUBLIC_LIVEKIT_API_KEY!,
   process.env.NEXT_PUBLIC_LIVEKIT_API_SECRET!
 );
 
-const ingressClient = new IngressClient(
-  process.env.NEXT_PUBLIC_LIVEKIT_API_URL!,
-  process.env.NEXT_PUBLIC_LIVEKIT_API_KEY!,
-  process.env.NEXT_PUBLIC_LIVEKIT_API_SECRET!
-);
-
-// Server tomonida ishlatish uchun Convex mijozini ishga tushirish
-const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
-
-// Mavjud Ingress-ni o'chirish funksiyasi
 const resetIngress = async (hostIdentity: string) => {
-
-  const ingresses = await ingressClient.listIngress({
+ const ingresses =   await ingressClient.listIngress({
     roomName: hostIdentity,
   });
-
-  // Host uchun barcha xonalarni olish
   const rooms = await roomService.listRooms([hostIdentity]);
 
   // Xonalarni o'chirish
@@ -51,19 +36,22 @@ const resetIngress = async (hostIdentity: string) => {
       await ingressClient.deleteIngress(ingress.ingressId);
     }
   }
-};
+}
+const ingressClient = new IngressClient(
+  process.env.NEXT_PUBLIC_LIVEKIT_API_URL!,
+  process.env.NEXT_PUBLIC_LIVEKIT_API_KEY!,
+  process.env.NEXT_PUBLIC_LIVEKIT_API_SECRET!
+);
 
-// Ingress yaratish funksiyasi
+const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
+
+
 export const createIngress = async (ingressType: IngressInput, user: any) => {
   try {
     if (!user) {
-      return { error: "Foydalanuvchi topilmadi" }; // Foydalanuvchi mavjud emasligini tekshirish
+      return { error: "Foydalanuvchi topilmadi" }; 
     }
 
-    // Foydalanuvchi uchun mavjud ingresslarni o'chirish
-    await resetIngress(user.id);
-
-    // Yangi ingress yaratish uchun parametrlarni tayyorlash
     const options: CreateIngressOptions = {
       name: user.username,
       roomName: user.id,
@@ -71,9 +59,8 @@ export const createIngress = async (ingressType: IngressInput, user: any) => {
       participantIdentity: user.id,
     };
 
-    // Ingress turi asosida transcoding sozlamalari
     if (ingressType === IngressInput.WHIP_INPUT) {
-      options.bypassTranscoding = true;
+      options.enableTranscoding =  true;
     } else {
       // Audio sozlamalari
       options.audio = new IngressAudioOptions({
@@ -96,7 +83,6 @@ export const createIngress = async (ingressType: IngressInput, user: any) => {
       });
     }
 
-    // Yangi ingress yaratish
     const ingress = await ingressClient.createIngress(ingressType, options);
     if (!ingress || !ingress.url || !ingress.streamKey) {
       return { error: "Ingress yaratishda xatolik yuz berdi" };
